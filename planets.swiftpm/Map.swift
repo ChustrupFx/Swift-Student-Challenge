@@ -22,7 +22,7 @@ class Map {
         return CGVector(dx: map[0].count, dy: map.count)
     }
     
-    func findNextStripe(ray: Ray) -> Float {
+    func findNextStripe(ray: Ray, camera: PlayerCamera) -> Float {
         let dir = ray.dir
         let pos = ray.pos
 
@@ -65,20 +65,20 @@ class Map {
         }
         
         var hit = false
-        var distance: Float = 0
+        var euclidianDistance: Float = 0
         let maxDistance: Float = 1000
         
-        while (!hit && distance < maxDistance) {
+        while (!hit && euclidianDistance < maxDistance) {
             if (sideDist.dx < sideDist.dy) {
                 // Quando o stripe X está mais perto do que o stripe Y
                 currentMap.dx += step.dx
-                distance = Float(sideDist.dx)
+                euclidianDistance = Float(sideDist.dx)
                 sideDist.dx += delta.dx * cellSize
                 
                 
             } else {
                 // Quando o stripe Y está mais perto do que o stripe X
-                distance = Float(sideDist.dy)
+                euclidianDistance = Float(sideDist.dy)
                 currentMap.dy += step.dy
                 sideDist.dy += delta.dy * cellSize
                 
@@ -95,9 +95,12 @@ class Map {
             
         }
         
-        distance = min(maxDistance, distance)
+        euclidianDistance = min(maxDistance, euclidianDistance)
+        let angleToCamDir = CGVector.angle(vector1: dir, vector2: camera.dir)
+        
+        let perWallDist = euclidianDistance * cos(angleToCamDir)
     
-        return distance
+        return perWallDist
     }
     
     func renderInScene(scene: SKScene) -> [SKShapeNode] {

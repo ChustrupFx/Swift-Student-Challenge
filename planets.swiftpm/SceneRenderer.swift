@@ -19,13 +19,11 @@ class SceneRenderer {
         
         for (index, ray) in rays.enumerated() {
             
-            let distance = map.findNextStripe(ray: ray)
-            
             if let view = scene.view {
                 let w = view.bounds.size.width
                 let h = view.bounds.size.height
                 
-                let distance = map.findNextStripe(ray: ray)
+                let distance = map.findNextStripe(ray: ray, camera: camera)
                 let lineHeight = Utils.map(minRange: 0, maxRange: 1000, minDomain: Float(w), maxDomain: 0, value: distance)
                 
                 let path = CGMutablePath()

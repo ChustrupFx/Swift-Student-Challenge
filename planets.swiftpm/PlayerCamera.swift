@@ -31,7 +31,6 @@ class PlayerCamera: SKNode {
     func initialize() {
         createRays()
         createRayNodes()
-
         
 //        for _ in rays {
 //
@@ -102,8 +101,6 @@ class PlayerCamera: SKNode {
         position = (position.toCGVector() + self.dir * 5).toCGPoint()
 
     }
-    
-    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
