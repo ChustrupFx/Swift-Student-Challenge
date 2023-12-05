@@ -31,7 +31,7 @@ class PlayerCamera: SKNode {
     func initialize() {
         createRays()
         createRayNodes()
-        renderScene()
+
         
 //        for _ in rays {
 //
@@ -44,43 +44,12 @@ class PlayerCamera: SKNode {
 //        }
     }
     
-    private func map(minRange:Float, maxRange:Float, minDomain:Float, maxDomain:Float, value:Float) -> Float {
-        return minDomain + (maxDomain - minDomain) * (value - minRange) / (maxRange - minRange)
-    }
+  
     
-    private func renderScene() {
-        
-        for (index, ray) in rays.enumerated() {
-            
-            let distance = map.findNextStripe(ray: ray)
-        
-            if let view = scene?.view {
-                let w = view.bounds.size.width
-                let h = view.bounds.size.height
-
-                let distance = map.findNextStripe(ray: ray)
-                let lineHeight = map(minRange: 0, maxRange: 1000, minDomain: Float(w), maxDomain: 0, value: distance)
-                
-                let path = CGMutablePath()
-                
-                let a = h / 2
-                let b = lineHeight / 2
-                let lineWidth = rayNodes[index].lineWidth
-                let x = (rayNodes[index].lineWidth * CGFloat(index) + lineWidth / 2)
-                path.move(to: .init(x: x, y: a - CGFloat(b)))
-                path.addLine(to: .init(x: x, y: a + CGFloat(b)))
-                
-                rayNodes[index].path = path
-            }
-        
-        }
-
-        
-    }
+    
     
     func update() {
         createRays()
-        renderScene()
         
 //        for (index, ray) in rays.enumerated() {
 //            let path = CGMutablePath()

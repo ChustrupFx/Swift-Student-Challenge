@@ -10,6 +10,7 @@ class Scene1: SKScene {
             return circle
     }()
     var mapNodes: [SKShapeNode] = []
+    var sceneRenderer: SceneRenderer!
         
     override func didMove(to view: SKView) {
         player = .init(map: map)
@@ -21,7 +22,7 @@ class Scene1: SKScene {
         
         player.initialize()
     
-        
+        sceneRenderer = .init(camera: player, map: map)
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -32,6 +33,7 @@ class Scene1: SKScene {
 //        circle.position = asd
         player.update()
         
+        sceneRenderer.renderIn(scene: self)
         
     }
     
