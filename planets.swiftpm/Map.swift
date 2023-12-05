@@ -1,4 +1,15 @@
 import SpriteKit
+
+struct RayOutData {
+    let euclidianDistance: Float
+    let perpwallDistance: Float
+    let normal: CGVector
+}
+
+enum Direction: Int {
+    case north, east, south, west
+}
+
 class Map {
     
     let map: [[Int]] = [
@@ -22,15 +33,16 @@ class Map {
         return CGVector(dx: map[0].count, dy: map.count)
     }
     
-    func findNextStripe(ray: Ray, camera: PlayerCamera) -> Float {
+    func findNextStripe(ray: Ray, camera: PlayerCamera) -> RayOutData {
         let dir = ray.dir
         let pos = ray.pos
-
+        
         let delta = CGVector(dx: sqrt(1 + pow((dir.dy/dir.dx), 2)), dy: sqrt(1 + pow((dir.dx/dir.dy), 2)))
         
         var sideDist = CGVector.zero
         var step: CGVector = .zero;
         var currentMap = CGVector(dx: Int(pos.dx / cellSize), dy: Int(pos.dy / cellSize))
+        var direction: Direction!
         
         if (dir.dx > 0) {
             // Quando o player está olhando para direita
@@ -75,6 +87,7 @@ class Map {
                 euclidianDistance = Float(sideDist.dx)
                 sideDist.dx += delta.dx * cellSize
                 
+                direction = dir.dx < 0 ? .east : .west
                 
             } else {
                 // Quando o stripe Y está mais perto do que o stripe X
@@ -82,15 +95,13 @@ class Map {
                 currentMap.dy += step.dy
                 sideDist.dy += delta.dy * cellSize
                 
-                
+                direction = dir.dy < 0 ? .north : .south
             }
             
             if (currentMap.dx >= 0 && currentMap.dx < mapSize.dx && currentMap.dy >= 0 && currentMap.dy < mapSize.dy) {
-                
                 if (map[Int(currentMap.dy)][Int(currentMap.dx)] == 1) {
                     hit = true
                 }
-                
             }
             
         }
@@ -99,9 +110,26 @@ class Map {
         let angleToCamDir = CGVector.angle(vector1: dir, vector2: camera.dir)
         
         let perWallDist = euclidianDistance * cos(angleToCamDir)
-    
-        return perWallDist
+        
+        return .init(euclidianDistance: euclidianDistance, perpwallDistance: perWallDist, normal: calcNormalOfDirection(direction: direction))
     }
+    
+    private func calcNormalOfDirection(direction: Direction) -> CGVector {
+        
+        switch(direction) {
+                
+            case .north:
+                return .init(dx: 0, dy: 1)
+            case .east:
+                return .init(dx: 1, dy: 0)
+            case .south:
+                return .init(dx: 0, dy: -1)
+            case .west:
+                return .init(dx: -1, dy: 0)
+        }
+        
+    }
+    
     
     func renderInScene(scene: SKScene) -> [SKShapeNode] {
         var nodes: [SKShapeNode] = []

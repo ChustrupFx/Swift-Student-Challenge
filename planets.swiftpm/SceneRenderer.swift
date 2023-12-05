@@ -23,7 +23,8 @@ class SceneRenderer {
                 let w = view.bounds.size.width
                 let h = view.bounds.size.height
                 
-                let distance = map.findNextStripe(ray: ray, camera: camera)
+                let rayOutData = map.findNextStripe(ray: ray, camera: camera)
+                let distance = rayOutData.perpwallDistance
                 let lineHeight = Utils.map(minRange: 0, maxRange: 1000, minDomain: Float(w), maxDomain: 0, value: distance)
                 
                 let path = CGMutablePath()
