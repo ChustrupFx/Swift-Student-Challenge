@@ -1,5 +1,4 @@
 import SwiftUI
-import SceneKit
 
 @main
 struct MyApp: App {

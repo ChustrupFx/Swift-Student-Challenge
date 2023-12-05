@@ -8,20 +8,20 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "test-pg",
+    name: "planets",
     platforms: [
         .iOS("16.0")
     ],
     products: [
         .iOSApplication(
-            name: "test-pg",
+            name: "planets",
             targets: ["AppModule"],
-            bundleIdentifier: "Victor.test-pg",
+            bundleIdentifier: "Victor.planets",
             teamIdentifier: "M67J2XKW43",
             displayVersion: "1.0",
             bundleVersion: "1",
-            appIcon: .placeholder(icon: .flower),
-            accentColor: .presetColor(.purple),
+            appIcon: .placeholder(icon: .note),
+            accentColor: .presetColor(.brown),
             supportedDeviceFamilies: [
                 .pad,
                 .phone
