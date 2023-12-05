@@ -2,12 +2,12 @@ import SpriteKit
 
 class Scene1: SKScene {
     
-    var player: PlayerCamera!asd
+    var player: PlayerCamera!
     let map = Map()
     let circle: SKShapeNode = {
         let circle = SKShapeNode(circleOfRadius: 20)
         circle.fillColor = .cyan
-        asdasdasd        return circle
+            return circle
     }()
     var mapNodes: [SKShapeNode] = []
         
