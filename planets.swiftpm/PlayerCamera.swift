@@ -4,13 +4,13 @@ class PlayerCamera: SKNode {
     var dir = CGVector(dx: 1, dy: 0)
     var pos = CGVector(dx: 0, dy: 0)
     
-    let initialPlane = CGVector(dx: 0, dy: -Int(tan(45 * 180 / Float.pi)))
+    let initialPlane = CGVector(dx: 0, dy: -Double(tan(Utils.toRadians(angleInDegrees: 60 / 2))))
     
     var plane: CGVector!
     let multiplyFactor: Float = 100
     var map: Map!
 
-    let numOfRays: Int = 500
+    let numOfRays: Int = 1000
     var rays: [Ray] = []
     var rayNodes: [SKShapeNode] = []
 

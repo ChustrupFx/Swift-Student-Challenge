@@ -11,14 +11,18 @@ extension CGVector {
         return Float(vector1.dx * vector2.dx + vector1.dy * vector2.dy)
     }
     
-    static func angle(vector1: CGVector, vector2: CGVector, vectorUp: CGVector = .init(dx: 0, dy: 1)) -> Float {
+    static func angle(vector1: CGVector, vector2: CGVector, vectorUp: CGVector? = .init(dx: 0, dy: 1)) -> Float {
         
-        let dot = CGVector.dot(vector1: vector1, vector2: vectorUp)
         
         var angle: Float = Float(acos(CGFloat(CGVector.dot(vector1: vector1, vector2: vector2)) / vector1.magnitude() * vector2.magnitude()))
         
-        if (dot < 0) {
-            angle *= -1
+        if let vectorUp = vectorUp {
+            let dot = CGVector.dot(vector1: vector1, vector2: vectorUp)
+            
+            
+            if (dot < 0) {
+                angle *= -1
+            }
         }
         
         return angle

@@ -24,8 +24,9 @@ class SceneRenderer {
                 let h = view.bounds.size.height
                 
                 let rayOutData = map.findNextStripe(ray: ray, camera: camera)
+                let alpha = calculateAlpha(rayData: rayOutData)
                 let distance = rayOutData.perpwallDistance
-                let lineHeight = Utils.map(minRange: 0, maxRange: 1000, minDomain: Float(w), maxDomain: 0, value: distance)
+                let lineHeight = (h / CGFloat(distance)) * 100
                 
                 let path = CGMutablePath()
                 
@@ -39,10 +40,35 @@ class SceneRenderer {
                 path.addLine(to: .init(x: x, y: a + CGFloat(b)))
                 
                 rayNode.path = path
+                
+                // Shading
+                rayNode.alpha = CGFloat(alpha)
             }
             
         }
+    }
+    
+    private func calculateAlpha(rayData: RayOutData) -> Float {
         
+        var angleFromWall = CGVector.angle(vector1: camera.position.toCGVector() - rayData.pos, vector2:  rayData.normal, vectorUp: nil)
+        let angleToDegrees =  Utils.toDegress(angleInRadians: angleFromWall)
+        let dot = CGVector.dot(vector1: (rayData.pos * rayData.normal).normalized(), vector2: camera.position.toCGVector() - rayData.pos)
+        
+        if (angleFromWall > Float.pi / 2) {
+            angleFromWall = Float.pi / 2
+        }
+        
+        var alpha = 1 - (angleFromWall / (Float.pi / 2))
+        
+        if (alpha > 1) {
+            alpha = 1
+        }
+        
+        if (alpha < 0) {
+            alpha = 0
+        }
+        
+        return alpha
         
     }
     

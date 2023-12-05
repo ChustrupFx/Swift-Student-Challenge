@@ -4,6 +4,8 @@ struct RayOutData {
     let euclidianDistance: Float
     let perpwallDistance: Float
     let normal: CGVector
+    let pos: CGVector
+    let dir: CGVector
 }
 
 enum Direction: Int {
@@ -109,9 +111,9 @@ class Map {
         euclidianDistance = min(maxDistance, euclidianDistance)
         let angleToCamDir = CGVector.angle(vector1: dir, vector2: camera.dir)
         
-        let perWallDist = euclidianDistance * cos(angleToCamDir)
+        let perWallDist = (euclidianDistance - 1) * cos(angleToCamDir)
         
-        return .init(euclidianDistance: euclidianDistance, perpwallDistance: perWallDist, normal: calcNormalOfDirection(direction: direction))
+        return .init(euclidianDistance: euclidianDistance, perpwallDistance: perWallDist, normal: calcNormalOfDirection(direction: direction), pos: camera.position.toCGVector() + dir * euclidianDistance, dir: dir)
     }
     
     private func calcNormalOfDirection(direction: Direction) -> CGVector {
