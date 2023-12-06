@@ -147,9 +147,16 @@ class Map {
                 let pos: CGVector = .init(dx: dx, dy: dy)
                 
                 let node = SKShapeNode(rect: .init(x: CGFloat(pos.dx), y: CGFloat(pos.dy), width: cellSize, height: cellSize))
+                node.strokeColor = .init(red: 0, green: 0, blue: 0, alpha: 0)
+//                node.fillColor = map[y][x] == 0 ? .black : .red
                 
-                node.fillColor = map[y][x] == 0 ? .black : .red
-                
+                if (map[y][x] != 0) {
+                    
+                    node.physicsBody = SKPhysicsBody(edgeLoopFrom: .init(origin: pos.toCGPoint(), size: .init(width: cellSize, height: cellSize)))
+                    node.physicsBody?.affectedByGravity = false
+                    node.physicsBody?.isDynamic = false
+                    
+                }
                 
                 scene.addChild(node)
                 nodes.append(node)
