@@ -16,7 +16,6 @@ class SceneRenderer {
         
         let rays = camera.rays
         
-        
         for (index, ray) in rays.enumerated() {
             
             if let view = scene.view {
@@ -26,13 +25,13 @@ class SceneRenderer {
                 let rayOutData = map.findNextStripe(ray: ray, camera: camera)
                 let alpha = calculateAlpha(rayData: rayOutData)
                 let distance = rayOutData.perpwallDistance
-                let lineHeight = (h / CGFloat(distance)) * 100
+                let lineHeight = (w / CGFloat(distance)) * 100
                 
                 let path = CGMutablePath()
                 
                 let rayNode = camera.rayNodes[index]
                 
-                let a = h / 2
+                let a = w / 2
                 let b = lineHeight / 2
                 let lineWidth = rayNode.lineWidth
                 let x = (rayNode.lineWidth * CGFloat(index) + lineWidth / 2)
